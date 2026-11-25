@@ -5,9 +5,11 @@ namespace App\Providers;
 use App\Domain\Auth\PasswordVerifier;
 use App\Domain\Auth\TokenIssuer;
 use App\Domain\Auth\UserRepository;
+use App\Domain\Gif\GifCatalog;
 use App\Infrastructure\Auth\EloquentUserRepository;
 use App\Infrastructure\Auth\HashPasswordVerifier;
 use App\Infrastructure\Auth\PassportTokenIssuer;
+use App\Infrastructure\Gif\GiphyGifCatalog;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
 
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->bind(PasswordVerifier::class, HashPasswordVerifier::class);
         $this->app->bind(TokenIssuer::class, PassportTokenIssuer::class);
+        $this->app->bind(GifCatalog::class, fn () => new GiphyGifCatalog((string) config('services.giphy.key')));
     }
 
     /**
