@@ -1,0 +1,35 @@
+@startuml secuencia-guardar-favorito
+skinparam shadowing false
+
+actor Usuario
+participant FavoriteController
+participant SaveFavorite
+participant FavoriteRepository
+database MySQL
+
+Usuario -> FavoriteController : POST /api/favorites
+FavoriteController -> SaveFavorite : execute(usuario del token, gif, alias, user_id)
+
+alt el user_id no es el del token
+  SaveFavorite --> FavoriteController : FavoriteUserMismatch
+  FavoriteController --> Usuario : 403
+else
+  SaveFavorite -> FavoriteRepository : findByUserAndGif
+  FavoriteRepository -> MySQL : SELECT
+  MySQL --> FavoriteRepository : fila o vacío
+
+  alt el gif ya estaba guardado
+    FavoriteRepository --> SaveFavorite : Favorite
+    SaveFavorite --> FavoriteController : FavoriteAlreadySaved
+    FavoriteController --> Usuario : 409
+  else
+    FavoriteRepository --> SaveFavorite : null
+    SaveFavorite -> FavoriteRepository : save
+    FavoriteRepository -> MySQL : INSERT
+    MySQL --> FavoriteRepository : ok
+    FavoriteRepository --> SaveFavorite : ok
+    SaveFavorite --> FavoriteController : Favorite
+    FavoriteController --> Usuario : 201
+  end
+end
+@enduml

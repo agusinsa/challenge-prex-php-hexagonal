@@ -81,6 +81,16 @@ No necesitan MySQL ni Giphy. El log se descarta y los puertos se reemplazan por 
 php artisan test
 ```
 
+## Diagramas
+
+En `docs`, en PlantUML:
+
+- `caso-de-uso.puml`
+- `secuencia-guardar-favorito.puml`
+- `entidad-relacion.puml`
+
+Las imágenes `.png` al lado se abren sin instalar nada. El texto `.puml` se puede previsualizar con la extensión PlantUML.
+
 ## Arquitectura
 
 El dominio no usa Laravel. La aplicación tiene los casos de uso. Infraestructura implementa los puertos: Eloquent, el HTTP de Giphy, Passport y los controllers. El `bind` está en `AppServiceProvider`.

@@ -1,0 +1,44 @@
+@startuml entidad-relacion
+skinparam shadowing false
+
+entity users {
+  * id : bigint <<PK>>
+  --
+  name : varchar
+  email : varchar
+  password : varchar
+}
+
+entity favorites {
+  * id : bigint <<PK>>
+  --
+  gif_id : varchar
+  alias : varchar
+  * user_id : bigint <<FK>>
+}
+
+entity api_logs {
+  * id : bigint <<PK>>
+  --
+  service : varchar
+  request_body : longtext
+  status_code : smallint
+  response_body : longtext
+  ip : varchar
+  user_id : bigint <<FK>>
+}
+
+users ||--o{ favorites
+users |o--o{ api_logs
+
+note right of favorites
+  Un usuario no puede
+  guardar dos veces el mismo gif.
+  Único: user_id + gif_id
+end note
+
+note right of api_logs
+  user_id queda vacío
+  si el request no tiene token.
+end note
+@enduml

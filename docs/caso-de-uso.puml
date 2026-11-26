@@ -1,0 +1,27 @@
+@startuml caso-de-uso
+left to right direction
+skinparam shadowing false
+
+actor Usuario
+
+rectangle "API Giphy" {
+  usecase "Iniciar sesión" as login
+  usecase "Buscar GIFs" as buscar
+  usecase "Ver un GIF" as ver
+  usecase "Guardar favorito" as guardar
+}
+
+actor Giphy
+
+Usuario --> login
+Usuario --> buscar
+Usuario --> ver
+Usuario --> guardar
+
+buscar ..> login : requiere token
+ver ..> login : requiere token
+guardar ..> login : requiere token
+
+buscar --> Giphy
+ver --> Giphy
+@enduml
