@@ -18,18 +18,18 @@ services:
     command: sh -c "php artisan passport:keys --force && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"
 
   db:
-    image: mariadb:11
+    image: mysql:8.4
     environment:
-      MARIADB_DATABASE: giphy
-      MARIADB_USER: giphy
-      MARIADB_PASSWORD: secret
-      MARIADB_ROOT_PASSWORD: root
+      MYSQL_DATABASE: giphy
+      MYSQL_USER: giphy
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
     volumes:
       - dbdata:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
       interval: 5s
       timeout: 5s
       retries: 20

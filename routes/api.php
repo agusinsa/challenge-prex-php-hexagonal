@@ -7,3 +7,4 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::get('/gifs', [GifController::class, 'search'])->middleware('auth:api');
+Route::get('/gifs/{id}', [GifController::class, 'show'])->middleware('auth:api');

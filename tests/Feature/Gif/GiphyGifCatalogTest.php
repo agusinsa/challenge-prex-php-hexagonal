@@ -38,4 +38,36 @@ class GiphyGifCatalogTest extends TestCase
                 && $request['api_key'] === 'test-key';
         });
     }
+
+    public function test_find_maps_a_single_gif(): void
+    {
+        Http::fake([
+            'api.giphy.com/v1/gifs/abc*' => Http::response([
+                'data' => [
+                    'id' => 'abc',
+                    'title' => 'Un gato',
+                    'url' => 'https://giphy.com/abc',
+                ],
+            ]),
+        ]);
+
+        $gif = (new GiphyGifCatalog('test-key'))->find('abc');
+
+        $this->assertNotNull($gif);
+        $this->assertSame('abc', $gif->id());
+        $this->assertSame('Un gato', $gif->title());
+        $this->assertSame('https://giphy.com/abc', $gif->url());
+    }
+
+    public function test_find_returns_null_when_giphy_does_not_have_the_gif(): void
+    {
+        Http::fake([
+            'api.giphy.com/*' => Http::response([
+                'data' => [],
+                'meta' => ['status' => 400, 'msg' => 'Validation error'],
+            ], 400),
+        ]);
+
+        $this->assertNull((new GiphyGifCatalog('test-key'))->find('no-existe'));
+    }
 }

@@ -51,4 +51,9 @@ final class FakeGifCatalog implements GifCatalog
 
         return $this->gifs;
     }
+
+    public function find(string $id): ?Gif
+    {
+        return null;
+    }
 }

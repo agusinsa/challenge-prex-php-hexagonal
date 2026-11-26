@@ -33,12 +33,35 @@ final class GiphyGifCatalog implements GifCatalog
         $response = Http::get('https://api.giphy.com/v1/gifs/search', $parameters)->throw();
 
         return array_map(
-            fn (array $item): Gif => new Gif(
-                $item['id'],
-                $item['title'] ?? '',
-                $item['url'] ?? '',
-            ),
+            fn (array $item): Gif => $this->toGif($item),
             $response->json('data') ?? [],
+        );
+    }
+
+    public function find(string $id): ?Gif
+    {
+        $response = Http::get('https://api.giphy.com/v1/gifs/'.$id, [
+            'api_key' => $this->apiKey,
+        ]);
+
+        if (in_array($response->status(), [400, 404], true)) {
+            return null;
+        }
+
+        $response->throw();
+
+        return $this->toGif($response->json('data'));
+    }
+
+    /**
+     * @param array<string, mixed> $item
+     */
+    private function toGif(array $item): Gif
+    {
+        return new Gif(
+            $item['id'],
+            $item['title'] ?? '',
+            $item['url'] ?? '',
         );
     }
 }

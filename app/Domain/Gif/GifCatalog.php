@@ -10,4 +10,6 @@ interface GifCatalog
      * @return list<Gif>
      */
     public function search(string $query, ?int $limit = null, ?int $offset = null): array;
+
+    public function find(string $id): ?Gif;
 }
