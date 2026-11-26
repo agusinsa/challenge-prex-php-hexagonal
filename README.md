@@ -1,6 +1,6 @@
 # API Giphy
 
-API REST para buscar GIFs en Giphy, ver uno por id y guardarlo como favorito. El acceso usa un token de Passport que vence a los 30 minutos. Cada request de la API queda en `api_logs`, con la contraseña del login reemplazada por `***`.
+API REST para buscar GIFs en Giphy, ver uno por id y guardarlo como favorito. El acceso usa un token de Passport (OAuth 2.0) que vence a los 30 minutos. Cada request de la API queda en `api_logs`, con la contraseña del login reemplazada por `***`.
 
 ## Requisitos
 
