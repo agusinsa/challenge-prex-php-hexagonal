@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Domain\Audit\ApiLogRepository;
 use App\Domain\Auth\PasswordVerifier;
 use App\Domain\Auth\TokenIssuer;
 use App\Domain\Auth\UserRepository;
 use App\Domain\Favorite\FavoriteRepository;
 use App\Domain\Gif\GifCatalog;
+use App\Infrastructure\Audit\EloquentApiLogRepository;
 use App\Infrastructure\Auth\EloquentUserRepository;
 use App\Infrastructure\Auth\HashPasswordVerifier;
 use App\Infrastructure\Auth\PassportTokenIssuer;
@@ -27,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TokenIssuer::class, PassportTokenIssuer::class);
         $this->app->bind(GifCatalog::class, fn () => new GiphyGifCatalog((string) config('services.giphy.key')));
         $this->app->bind(FavoriteRepository::class, EloquentFavoriteRepository::class);
+        $this->app->bind(ApiLogRepository::class, EloquentApiLogRepository::class);
     }
 
     /**
