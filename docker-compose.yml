@@ -15,7 +15,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: sh -c "php artisan passport:keys --force && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"
+    command: sh -c "php artisan passport:keys --force && php artisan migrate --force && php artisan serve --no-reload --host=0.0.0.0 --port=8000"
 
   db:
     image: mysql:8.4
@@ -36,3 +36,9 @@ services:
 
 volumes:
   dbdata:
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.30.10.0/24
